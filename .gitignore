@@ -1,0 +1,15 @@
+*.pyc
+*.spec
+upload.sh
+setup.cfg
+pywebview.egg-info
+MANIFEST
+build
+dist
+.cache
+.idea
+.vs
+bin
+obj
+.DS_Store
+venv

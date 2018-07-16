@@ -1,0 +1,488 @@
+
+[2018-06-14 19:04:25] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/testqt.py", line 371, in <module>
+    main()
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/testqt.py", line 56, in main
+    app = CefApplication(sys.argv)
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/testqt.py", line 229, in __init__
+    self.setupIcon()
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/testqt.py", line 247, in setupIcon
+    "resources", "{0}.png".format(sys.argv[1]))
+IndexError: list index out of range
+
+
+[2018-06-14 19:12:06] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/qt_test.py", line 12, in <module>
+    webview.create_window("Simple browser", "http://www.baidu.com")
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 358, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 354, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 124, in __init__
+    self.view = cef.CreateBrowserSync(window_info,url)
+  File "cefpython_py36.pyx", line 854, in cefpython_py36.CreateBrowserSync (cefpython_py36.cpp:98877)
+TypeError: Expected dict, got str
+
+
+[2018-06-14 19:17:03] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/qt_test.py", line 12, in <module>
+    webview.create_window("Simple browser", "http://www.baidu.com")
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 354, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 350, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 125, in __init__
+    window_info.SetAsChild(self.getHandle(), rect)
+AttributeError: 'BrowserView' object has no attribute 'getHandle'
+
+
+[2018-06-14 19:59:34] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/multiple_windows.py", line 23, in <module>
+    webview.create_window('Window #1', width=800, height=600)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 361, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 357, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 130, in __init__
+    self.view = cef.CreateBrowserSync(window_info,url=url)
+  File "cefpython_py36.pyx", line 859, in cefpython_py36.CreateBrowserSync (cefpython_py36.cpp:98897)
+  File "utils.pyx", line 78, in cefpython_py36.GetNavigateUrl (cefpython_py36.cpp:6803)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/re.py", line 182, in search
+    return _compile(pattern, flags).search(string)
+TypeError: expected string or bytes-like object
+
+
+[2018-06-14 20:16:27] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/multiple_windows.py", line 23, in <module>
+    webview.create_window('Window #1', width=800, height=600)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 363, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 359, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 132, in __init__
+    self.view.loadString("<html><body>test text</body></html>", "http://abc.com");
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'loadString'
+
+
+[2018-06-14 20:16:33] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/qt_test.py", line 12, in <module>
+    webview.create_window("Simple browser", "http://www.baidu.com")
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 363, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 359, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 132, in __init__
+    self.view.loadString("<html><body>test text</body></html>", "http://abc.com");
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'loadString'
+
+
+[2018-06-14 20:16:45] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/qt_test.py", line 12, in <module>
+    webview.create_window("Simple browser", "http://www.baidu.com")
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 363, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 359, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 132, in __init__
+    self.view.loadHtml("<html><body>test text</body></html>", "http://abc.com");
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'loadHtml'
+
+
+[2018-06-14 20:16:53] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/qt_test.py", line 12, in <module>
+    webview.create_window("Simple browser", "http://www.baidu.com")
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 363, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 359, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 132, in __init__
+    self.view.loadhtml("<html><body>test text</body></html>", "http://abc.com");
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'loadhtml'
+
+
+[2018-06-14 20:17:56] Traceback (most recent call last):
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1664, in <module>
+    main()
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1658, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1068, in run
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_imps/_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/qt_test.py", line 12, in <module>
+    webview.create_window("Simple browser", "http://www.baidu.com")
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 363, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 359, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 132, in __init__
+    self.view.loadhtml("<html><body>test text</body></html>", "http://abc.com");
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'loadhtml'
+
+
+[2018-06-14 20:27:12] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/multiple_windows.py", line 23, in <module>
+    webview.create_window('Window #1', width=800, height=600)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 362, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 358, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 130, in __init__
+    self.view = cef.CreateBrowserSync(window_info,url=url)
+  File "cefpython_py36.pyx", line 859, in cefpython_py36.CreateBrowserSync (cefpython_py36.cpp:98897)
+  File "utils.pyx", line 78, in cefpython_py36.GetNavigateUrl (cefpython_py36.cpp:6803)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/re.py", line 182, in search
+    return _compile(pattern, flags).search(string)
+TypeError: expected string or bytes-like object
+
+
+[2018-06-14 20:28:13] Traceback (most recent call last):
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1664, in <module>
+    main()
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1658, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1068, in run
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_imps/_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/multiple_windows.py", line 23, in <module>
+    webview.create_window('Window #1', width=800, height=600)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 362, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 358, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 130, in __init__
+    self.view = cef.CreateBrowserSync(window_info,url=url)
+  File "cefpython_py36.pyx", line 859, in cefpython_py36.CreateBrowserSync (cefpython_py36.cpp:98897)
+  File "utils.pyx", line 78, in cefpython_py36.GetNavigateUrl (cefpython_py36.cpp:6803)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/re.py", line 182, in search
+    return _compile(pattern, flags).search(string)
+TypeError: expected string or bytes-like object
+
+
+[2018-06-14 20:31:20] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/multiple_windows.py", line 23, in <module>
+    webview.create_window('Window #1', width=800, height=600)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 363, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 359, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 131, in __init__
+    self.view.LoadUrl(url)
+  File "browser.pyx", line 414, in cefpython_py36.PyBrowser.LoadUrl (cefpython_py36.cpp:17350)
+  File "browser.pyx", line 415, in cefpython_py36.PyBrowser.LoadUrl (cefpython_py36.cpp:17301)
+  File "frame.pyx", line 185, in cefpython_py36.PyFrame.LoadUrl (cefpython_py36.cpp:28402)
+  File "utils.pyx", line 78, in cefpython_py36.GetNavigateUrl (cefpython_py36.cpp:6803)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/re.py", line 182, in search
+    return _compile(pattern, flags).search(string)
+TypeError: expected string or bytes-like object
+
+
+[2018-06-14 20:31:25] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/multiple_windows.py", line 23, in <module>
+    webview.create_window('Window #1', width=800, height=600)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 363, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 359, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 131, in __init__
+    self.view.LoadUrl(url)
+  File "browser.pyx", line 414, in cefpython_py36.PyBrowser.LoadUrl (cefpython_py36.cpp:17350)
+  File "browser.pyx", line 415, in cefpython_py36.PyBrowser.LoadUrl (cefpython_py36.cpp:17301)
+  File "frame.pyx", line 185, in cefpython_py36.PyFrame.LoadUrl (cefpython_py36.cpp:28402)
+  File "utils.pyx", line 78, in cefpython_py36.GetNavigateUrl (cefpython_py36.cpp:6803)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/re.py", line 182, in search
+    return _compile(pattern, flags).search(string)
+TypeError: expected string or bytes-like object
+
+
+[2018-06-14 20:40:00] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 200, in on_load_html
+    self.view.setHtml(content, QtCore.QUrl(base_uri))
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'setHtml'
+
+
+[2018-06-14 20:40:18] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 200, in on_load_html
+    self.view.setHtml(content, QtCore.QUrl(base_uri))
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'setHtml'
+
+
+[2018-06-14 20:56:17] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 201, in on_load_html
+    self.view.setHtml(content, QtCore.QUrl(base_uri))
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'setHtml'
+
+
+[2018-06-14 21:32:05] Traceback (most recent call last):
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1664, in <module>
+    main()
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1658, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/pydevd.py", line 1068, in run
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_imps/_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/evaluate_js.py", line 30, in <module>
+    webview.create_window('Run custom JavaScript')
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 397, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 393, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 160, in __init__
+    self.view.OnLoadEnd.connect(self.on_load_finished)
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'OnLoadEnd'
+
+
+[2018-06-14 21:37:12] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 269, in on_evaluate_js
+    return_result(self.view.page().mainFrame().evaluateJavaScript(script))
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'page'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 271, in on_evaluate_js
+    self.view.page().runJavaScript(script, return_result)
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'page'
+
+
+[2018-06-14 22:12:49] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 201, in on_load_url
+    self.view.setUrl(QtCore.QUrl(url))
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'setUrl'
+
+
+[2018-06-15 12:21:53] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 201, in on_load_url
+    self.view.setUrl(QtCore.QUrl(url))
+AttributeError: 'cefpython_py36.PyBrowser' object has no attribute 'setUrl'
+
+
+[2018-06-15 13:42:53] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/evaluate_js.py", line 22, in <module>
+    webview.create_window('Run custom JavaScript')
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 400, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 396, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 138, in __init__
+    self.view = cef.CreateBrowserSync(title=window_info, url="about:blank")
+  File "cefpython_py36.pyx", line 794, in cefpython_py36.CreateBrowserSync (cefpython_py36.cpp:98635)
+Exception: Invalid argument: title
+
+
+[2018-06-15 13:43:36] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/evaluate_js.py", line 22, in <module>
+    webview.create_window('Run custom JavaScript')
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 400, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 396, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 138, in __init__
+    self.view = cef.CreateBrowserSync(window_title=window_info, url="about:blank")
+  File "cefpython_py36.pyx", line 931, in cefpython_py36.CreateBrowserSync (cefpython_py36.cpp:99368)
+  File "string_utils.pyx", line 57, in cefpython_py36.PyStringToChar (cefpython_py36.cpp:7984)
+TypeError: Expected bytes, got cefpython_py36.WindowInfo
+
+
+[2018-06-15 13:44:46] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/evaluate_js.py", line 22, in <module>
+    webview.create_window('Run custom JavaScript')
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 400, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 396, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 138, in __init__
+    self.view = cef.CreateBrowserSync(window_info,"about:blank")
+  File "cefpython_py36.pyx", line 854, in cefpython_py36.CreateBrowserSync (cefpython_py36.cpp:98877)
+TypeError: Expected dict, got str
+
+
+[2018-06-15 14:54:47] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/ceftest", line 185, in <module>
+    class External(object):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/ceftest", line 200, in External
+    main()
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/ceftest", line 75, in main
+    set_javascript_bindings(browser)
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/ceftest", line 125, in set_javascript_bindings
+    external = External(browser)
+NameError: name 'External' is not defined
+
+
+[2018-06-15 15:11:25] Traceback (most recent call last):
+  File "v8function_handler.pyx", line 42, in cefpython_py36.V8FunctionHandler_Execute (cefpython_py36.cpp:95007)
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/ceftest", line 200, in test_multiple_callbacks
+    js_callback.Call("alert(123)", py_callback1)
+NameError: name 'py_callback1' is not defined
+
+
+[2018-06-15 15:31:26] Traceback (most recent call last):
+  File "python_callback.pyx", line 83, in cefpython_py36.ExecutePythonCallback (cefpython_py36.cpp:45515)
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/ceftest", line 201, in py_callback1
+    js_print(self.browser, "Python", "py_callback", msg_from_js)
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/ceftest", line 141, in js_print
+    browser.ExecuteFunction("js_print", lang, event, msg)
+  File "browser.pyx", line 307, in cefpython_py36.PyBrowser.ExecuteFunction (cefpython_py36.cpp:13821)
+  File "frame.pyx", line 133, in cefpython_py36.PyFrame.ExecuteFunction (cefpython_py36.cpp:26434)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/encoder.py", line 180, in default
+    o.__class__.__name__)
+TypeError: Object of type 'JavascriptCallback' is not JSON serializable
+
+
+[2018-06-15 16:07:32] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/load_html.py", line 21, in <module>
+    webview.create_window("Simple browser", width=800, height=600, resizable=True)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 403, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 399, in _create
+    browser.DragSourceSystemDragEnded(False)
+AttributeError: 'BrowserView' object has no attribute 'DragSourceSystemDragEnded'
+
+
+[2018-06-15 16:08:27] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/load_html.py", line 21, in <module>
+    webview.create_window("Simple browser", width=800, height=600, resizable=True)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 403, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 399, in _create
+    browser.DragSourceSystemDragEnded()
+AttributeError: 'BrowserView' object has no attribute 'DragSourceSystemDragEnded'
+
+
+[2018-06-15 16:08:36] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/load_html.py", line 21, in <module>
+    webview.create_window("Simple browser", width=800, height=600, resizable=True)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 403, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 399, in _create
+    browser.CloseDevTools()
+AttributeError: 'BrowserView' object has no attribute 'CloseDevTools'
+
+
+[2018-06-15 16:08:43] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/load_html.py", line 21, in <module>
+    webview.create_window("Simple browser", width=800, height=600, resizable=True)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 403, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 399, in _create
+    browser.CloseDevTools
+AttributeError: 'BrowserView' object has no attribute 'CloseDevTools'
+
+
+[2018-06-15 16:09:57] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/load_html.py", line 21, in <module>
+    webview.create_window("Simple browser", width=800, height=600, resizable=True)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 404, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 400, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 140, in __init__
+    self.view.CloseDevTools=True
+AttributeError: 'cefpython_py36.PyBrowser' object attribute 'CloseDevTools' is read-only
+
+
+[2018-06-15 16:10:10] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/load_html.py", line 21, in <module>
+    webview.create_window("Simple browser", width=800, height=600, resizable=True)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 404, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 400, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 140, in __init__
+    self.view.CloseDevTools(True)
+TypeError: CloseDevTools() takes no arguments (1 given)
+
+
+[2018-06-15 16:10:47] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/load_html.py", line 21, in <module>
+    webview.create_window("Simple browser", width=800, height=600, resizable=True)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 404, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 400, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 141, in __init__
+    self.view.DragSourceSystemDragEnded(False)
+TypeError: DragSourceSystemDragEnded() takes no arguments (1 given)
+
+
+[2018-06-15 16:12:24] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/evaluate_js.py", line 20, in <module>
+    webview.create_window('Run custom JavaScript')
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 404, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 400, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 140, in __init__
+    print(self.view.CloseDevTools(True))
+TypeError: CloseDevTools() takes no arguments (1 given)
+
+
+[2018-06-15 16:12:41] Traceback (most recent call last):
+  File "/Users/chenyulu/PycharmProjects/pywebview/examples/evaluate_js.py", line 20, in <module>
+    webview.create_window('Run custom JavaScript')
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/__init__.py", line 227, in create_window
+    background_color, debug, js_api, _webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 404, in create_window
+    _create()
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 400, in _create
+    webview_ready)
+  File "/Users/chenyulu/PycharmProjects/pywebview/webview/qt.py", line 140, in __init__
+    print(self.view.CloseDevTools(self.view,True))
+TypeError: CloseDevTools() takes no arguments (2 given)
+
