@@ -11,17 +11,13 @@ Licensed under BSD license
 http://github.com/r0x0r/pywebview/
 """
 
-
-import platform
 import os
-import sys
 import re
 import json
 import logging
+import time
 from threading import Event, Thread, current_thread
 from uuid import uuid4
-
-from .localization import localization
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -30,101 +26,13 @@ OPEN_DIALOG = 10
 FOLDER_DIALOG = 20
 SAVE_DIALOG = 30
 
-
-class Config (dict):
-
-    def __init__(self):
-        self.use_qt = "USE_QT" in os.environ
-        self.use_win32 = "USE_WIN32" in os.environ
-
-    def __getitem__(self, key):
-        return getattr(self, key.lower())
-
-    def __setitem__(self, key, value):
-        setattr(self, key.lower(), value)
-
-
-config = Config()
-
-_initialized = False
 _webview_ready = Event()
 
 
-def _initialize_imports():
-    global _initialized, gui
-    import_error = False
-
-    if not _initialized:
-        if platform.system() == "Darwin":
-            if not config.use_qt:
-                try:
-                    import webview.cocoa as gui
-                except ImportError:
-                    logger.exception("PyObjC cannot be loaded")
-                    import_error = True
-
-            if import_error or config.use_qt:
-                try:
-                    import webview.qt as gui
-                    logger.debug("Using QT")
-                except ImportError as e:
-                    # Panic
-                    logger.exception("QT cannot be loaded")
-                    raise Exception("You must have either PyObjC (for Cocoa support) or Qt with Python bindings installed in order to use this library.")
-
-        elif platform.system() == "Linux":
-            if not config.use_qt:
-                try:
-                    import webview.gtk as gui
-                    logger.debug("Using GTK")
-                except (ImportError, ValueError) as e:
-                    logger.exception("GTK cannot be loaded")
-                    import_error = True
-
-            if import_error or config.use_qt:
-                try:
-                    # If GTK is not found, then try QT
-                    import webview.qt as gui
-                    logger.debug("Using QT")
-                except ImportError as e:
-                    # Panic
-                    logger.exception("QT cannot be loaded")
-                    raise Exception("You must have either QT or GTK with Python extensions installed in order to use this library.")
-
-        elif platform.system() == "Windows":
-            #Try .NET first unless use_win32 flag is set
-            if not config.use_win32:
-                try:
-                    import webview.winforms as gui
-                    logger.debug("Using .NET")
-                except ImportError as e:
-                    logger.exception("pythonnet cannot be loaded")
-                    import_error = True
-
-            if import_error or config.use_qt:
-                try:
-                    # If NET is not found, then try QT
-                    import webview.qt as gui
-                    logger.debug("Using QT")
-                    import_error = False
-                except ImportError as e:
-                    # Panic
-                    logger.exception("QT cannot be loaded")
-                    import_error = True
-
-            if import_error or config.use_win32:
-                try:
-                    # If .NET is not found, then try Win32
-                    import webview.win32 as gui
-                    logger.debug("Using Win32")
-                except ImportError as e:
-                    # Panic
-                    logger.exception("PyWin32 cannot be loaded")
-                    raise Exception("You must have either pythonnet or pywin32 installed in order to use this library.")
-        else:
-            raise Exception("Unsupported platform. Only Windows, Linux and OS X are supported.")
-
-        _initialized = True
+# func:
+def generate_guid():
+    """generate_guid, created by hy@20180720"""
+    return 'child_' + uuid4().hex[:8]
 
 
 def create_file_dialog(dialog_type=OPEN_DIALOG, directory='', allow_multiple=False, save_filename='', file_types=()):
@@ -151,7 +59,36 @@ def create_file_dialog(dialog_type=OPEN_DIALOG, directory='', allow_multiple=Fal
         _webview_ready.wait(5)
         return gui.create_file_dialog(dialog_type, directory, allow_multiple, save_filename, file_types)
     except NameError as e:
-        raise Exception("Create a web view window first, before invoking this function")
+        raise Exception("Create a web view window first, before invoking this function", e)
+
+
+def get_window_instance(url=''):
+    def do_load_url():
+        uid = generate_guid()
+        create_window(
+            uid=uid,
+            url=url,
+            title='The Title Of WebView @ {time} '.format(time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
+            width=1200,
+            height=800,
+            context_menu=True
+        )
+
+    new_web_view_thread = Thread(target=do_load_url)
+    new_web_view_thread.start()
+
+
+# 内置window对象
+window_payload = {
+    'py_console': {
+        'type': 'function',
+        'value': lambda msg='': print('py_console : ', msg)
+    },
+    'get_window_instance': {
+        'type': 'function',
+        'value': get_window_instance
+    },
+}
 
 
 def load_url(url, uid='master'):
@@ -187,12 +124,13 @@ def load_html(content, base_uri='', uid='master'):
         raise Exception("Cannot call function: No webview exists with uid: {}".format(uid))
 
 
-def create_window(title, url=None, js_api=None, width=800, height=600,
+def create_window(uid='master', title='', url=None, js_api=None, width=800, height=600,
                   resizable=True, fullscreen=False, min_size=(200, 100), strings={}, confirm_quit=False,
-                  background_color='#FFFFFF', debug=False):
+                  background_color='#FFFFFF', debug=False, context_menu=False, payload=window_payload):
     """
     Create a web view window using a native GUI. The execution blocks after this function is invoked, so other
     program logic must be executed in a separate thread.
+    :param uid: the unique web view identifier
     :param title: Window title
     :param url: URL to load
     :param width: Optional window width (default: 800px)
@@ -203,30 +141,16 @@ def create_window(title, url=None, js_api=None, width=800, height=600,
     :param strings: a dictionary with localized strings
     :param confirm_quit: Display a quit confirmation dialog. Default is False
     :param background_color: Background color as a hex string that is displayed before the content of webview is loaded. Default is white.
+    :param context_menu: enable devTool with context_menu
+    :param payload: when window instance is created , the content of payload will be injected into global window object
     :return:
     """
-    uid = 'child_' + uuid4().hex[:8]
-
-    valid_color = r'^#(?:[0-9a-fA-F]{3}){1,2}$'
-    if not re.match(valid_color, background_color):
-        raise ValueError('{0} is not a valid hex triplet color'.format(background_color))
-
-    if not _initialized:
-        # Check if starting up from main thread; if not, wait; finally raise exception
-        if current_thread().name != 'MainThread':
-            if not _webview_ready.wait(5):
-                raise Exception("Call create_window from the main thread first, and then from subthreads")
-        else:
-            _initialize_imports()
-            localization.update(strings)
-            uid = 'master'
-
+    global gui
+    import webview.qt as gui
     _webview_ready.clear()
     gui.create_window(uid, _make_unicode(title), _transform_url(url),
                       width, height, resizable, fullscreen, min_size, confirm_quit,
-                      background_color, debug, js_api, _webview_ready)
-
-    return uid
+                      background_color, debug, js_api, _webview_ready, context_menu, payload)
 
 
 def set_title(title, uid='master'):
@@ -313,19 +237,12 @@ def window_exists(uid='master'):
         return False
 
 
-def webview_ready(timeout=None):
-    """
-    :param delay: optional timeout
-    :return: True when the last opened window is ready. False if the timeout is reached, when the timeout parameter is provided.
-    Until then blocks the calling thread.
-    """
-    return _webview_ready.wait(timeout)
-
-
 def _js_bridge_call(uid, api_instance, func_name, param):
     def _call():
         result = json.dumps(function(func_params))
-        code = 'window.pywebview._returnValues["{0}"] = {{ isSet: true, value: {1}}}'.format(func_name, _escape_line_breaks(result))
+        code = 'window.pywebview._returnValues["{0}"] = {{ isSet: true, value: {1}}}'.format(func_name,
+                                                                                             _escape_line_breaks(
+                                                                                                 result))
         evaluate_js(code, uid)
 
     function = getattr(api_instance, func_name, None)
@@ -363,15 +280,6 @@ def _escape_line_breaks(string):
 
 
 def _make_unicode(string):
-    """
-    Python 2 and 3 compatibility function that converts a string to Unicode. In case of Unicode, the string is returned
-    unchanged
-    :param string: input string
-    :return: Unicode string
-    """
-    if sys.version < '3' and isinstance(string, str):
-        return unicode(string.decode('utf-8'))
-
     return string
 
 

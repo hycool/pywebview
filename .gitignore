@@ -13,3 +13,5 @@ bin
 obj
 .DS_Store
 venv
+requirements.txt
+__test__
