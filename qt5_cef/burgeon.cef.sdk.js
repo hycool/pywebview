@@ -1,4 +1,5 @@
 (function () {
+    const moduleName = 'windowInstance';
     const cef = {};
     const customEventMap = {
         windowCloseEvent: {
@@ -9,9 +10,9 @@
     };
     cef.dispatchCustomEvent = (eventName) => {
         if (customEventMap[eventName].hooks === 0 &&
-            window["windowInstance"] &&
-            typeof window["windowInstance"]["closeWindow"] === 'function') {
-            window["windowInstance"]["closeWindow"]();
+            window[moduleName] &&
+            typeof window[moduleName]["closeWindow"] === 'function') {
+            window[moduleName]["closeWindow"]();
         } else {
             window.dispatchEvent(customEventMap[eventName].event)
         }
@@ -39,6 +40,35 @@
         }
         customEventMap[eventName].hooks -= 1;
         window.removeEventListener(eventName, eventHook);
+    };
+    cef.console = (msg, type) => {
+        switch (type) {
+            case 'error':
+                console.error(msg);
+                break;
+            case 'warn':
+                console.warn(msg);
+                break;
+            default:
+                console.log(msg);
+                break;
+        }
+    };
+    cef.initializeCustomizePayload = (payload) => {
+        if (window[moduleName] === undefined) {
+            window[moduleName] = {}
+        }
+        const instance = window[moduleName];
+        instance.payload = {};
+        Object.keys(payload).forEach(key => {
+            instance.payload[key] = payload[key]
+        })
+    };
+    cef.updateWindowInstance = (key, value) => {
+        if (window[moduleName] === undefined) {
+            window[moduleName] = {}
+        }
+        window[moduleName][key] = value;
     };
     window.__cef__ = cef;
 } ());

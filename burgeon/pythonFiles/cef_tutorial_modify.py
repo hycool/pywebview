@@ -44,7 +44,7 @@ HTML_code = """
         js_print("Javascript", "navigator.userAgent", navigator.userAgent);
         js_print("Javascript", "cefpython_version", cefpython_version.version);
         html_to_data_uri("test", js_callback_1);
-        external.test_multiple_callbacks(js_callback_2);
+        external.test   _multiple_callbacks(js_callback_2);
     };
     </script>
 </head>
@@ -80,9 +80,9 @@ def main():
     demo1.show()
 
 
-    set_global_handler()
-    set_client_handlers(browser)
-    set_javascript_bindings(browser)
+    # set_global_handler()
+    # set_client_handlers(browser)
+    # set_javascript_bindings(browser)
     cef.MessageLoop()
     cef.Shutdown()
     sys.exit(app.exec_())

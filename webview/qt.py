@@ -11,15 +11,20 @@ import sys
 import base64
 from threading import Semaphore, Event
 from cefpython3 import cefpython as cef
+import platform
 
 from webview import OPEN_DIALOG, FOLDER_DIALOG, SAVE_DIALOG
 from webview import _parse_api_js, _js_bridge_call
 from webview.localization import localization
 
+
 # Fix for PyCharm hints warnings when using static methods
 WindowUtils = cef.WindowUtils()
 
+
+
 logger = logging.getLogger(__name__)
+
 
 # Try importing Qt5 modules
 try:
@@ -27,7 +32,6 @@ try:
 
     # Check to see if we're running Qt > 5.5
     from PyQt5.QtCore import QT_VERSION_STR
-
     _qt_version = [int(n) for n in QT_VERSION_STR.split('.')]
 
     # if _qt_version >= [5, 5]:
@@ -45,7 +49,7 @@ try:
     # noinspection PyUnresolvedReferences
     from PyQt5.QtWidgets import *
 
-    # logger.debug('Using Qt5')
+    logger.debug('Using Qt5')
 except ImportError as e:
     logger.exception('PyQt5 or one of dependencies is not found')
     _import_error = True
@@ -105,9 +109,9 @@ class BrowserView(QMainWindow):
         self._current_url = None
         self._file_name = None
 
-        self.resize(width, height)  # QWidget.resize 重新调整qt 窗口大小
+        self.resize(width, height)
         self.title = title
-        self.setWindowTitle(title)  # QWidget.setWindowTitle 窗口标题重命名
+        self.setWindowTitle(title)
 
         # Set window background color
         self.background_color = QColor()
@@ -124,18 +128,15 @@ class BrowserView(QMainWindow):
         window_info = cef.WindowInfo()
         rect = [0, 0, self.width(), self.height()]
         window_info.SetAsChild(int(self.winId()), rect)
+        print(title)
         self.check_versions()
 
-        setting = {
-            "default_encoding": "utf-8",
-            "plugins_disabled": True,
-            "tab_to_links_disabled": True,
-            "web_security_disabled": True,
-        }
-        if url is not None:
-            self.view = cef.CreateBrowserSync(window_info, url=url, settings=setting)
+        setting={"default_encoding":"utf-8","plugins_disabled":True,"tab_to_links_disabled":True,"web_security_disabled":True}
+        if url!=None:
+            self.view = cef.CreateBrowserSync(window_info,url=url,settings=setting)
         else:
-            self.view = cef.CreateBrowserSync(window_info, url="about:blank", settings=setting)
+            self.view = cef.CreateBrowserSync(window_info,url="about:blank",settings=setting)
+
 
         # self.browser.SetClientHandler(LoadHandler(self.parent.navigation_bar))
         # self.browser.SetClientHandler(FocusHandler(self))
@@ -180,15 +181,12 @@ class BrowserView(QMainWindow):
 
     def on_file_dialog(self, dialog_type, directory, allow_multiple, save_filename, file_filter):
         if dialog_type == FOLDER_DIALOG:
-            self._file_name = QFileDialog.getExistingDirectory(self, localization['linux.openFolder'],
-                                                               options=QFileDialog.ShowDirsOnly)
+            self._file_name = QFileDialog.getExistingDirectory(self, localization['linux.openFolder'], options=QFileDialog.ShowDirsOnly)
         elif dialog_type == OPEN_DIALOG:
             if allow_multiple:
-                self._file_name = QFileDialog.getOpenFileNames(self, localization['linux.openFiles'], directory,
-                                                               file_filter)
+                self._file_name = QFileDialog.getOpenFileNames(self, localization['linux.openFiles'], directory, file_filter)
             else:
-                self._file_name = QFileDialog.getOpenFileName(self, localization['linux.openFile'], directory,
-                                                              file_filter)
+                self._file_name = QFileDialog.getOpenFileName(self, localization['linux.openFile'], directory, file_filter)
         elif dialog_type == SAVE_DIALOG:
             if directory:
                 save_filename = os.path.join(str(directory), str(save_filename))
@@ -216,23 +214,23 @@ class BrowserView(QMainWindow):
         ret = "data:text/html;base64,{data}".format(data=b64)
         if js_callback:
             self.view.js_print(js_callback.GetFrame().GetBrowser(),
-                               "Python", "html_to_data_uri",
-                               "Called from Javascript. Will call Javascript callback now.")
+                     "Python", "html_to_data_uri",
+                     "Called from Javascript. Will call Javascript callback now.")
             js_callback.Call(ret)
         else:
-            self.view.LoadUrl(ret)
+             self.view.LoadUrl(ret)
         self.load_event.set()
 
+
+
     def check_versions(self):
-        """
         ver = cef.GetVersion()
         print("[tutorial.py] CEF Python {ver}".format(ver=ver["version"]))
         print("[tutorial.py] Chromium {ver}".format(ver=ver["chrome_version"]))
         print("[tutorial.py] CEF {ver}".format(ver=ver["cef_version"]))
         print("[tutorial.py] Python {ver} {arch}".format(
-            ver=platform.python_version(),
-            arch=platform.architecture()[0]))
-        """
+        ver=platform.python_version(),
+        arch=platform.architecture()[0]))
         assert cef.__version__ >= "57.0", "CEF Python v57.0+ required to run this"
 
     def closeEvent(self, event):
@@ -249,7 +247,7 @@ class BrowserView(QMainWindow):
 
         super(BrowserView, self).closeEvent(event)
 
-    def setCookie(self, cookie):
+    def setCookie(self,cookie):
         cookieStore = self.view.page().profile().cookieStore()
         cookieStore.setCookie(cookie)
 
@@ -271,6 +269,7 @@ class BrowserView(QMainWindow):
         self.view.GetMainFrame().ExecuteJavascript(script)
 
         # self._evaluate_js_result = self.view.ExecuteJavascript(script)
+
 
     def on_load_finished(self):
         if self.js_bridge.api:
@@ -359,17 +358,18 @@ class BrowserView(QMainWindow):
             frame = self.view.page().mainFrame()
             _register_window_object()
 
-        try:  # PyQt4
+        try:    # PyQt4
             self.view.page().mainFrame().evaluateJavaScript(script)
         except AttributeError:  # PyQt5
             self.view.page().runJavaScript(script)
 
         self.load_event.set()
 
+
     @staticmethod
     def _convert_string(qstring):
         try:
-            qstring = qstring.toString()  # QJsonValue conversion
+            qstring = qstring.toString() # QJsonValue conversion
         except:
             pass
 
@@ -384,54 +384,33 @@ class BrowserView(QMainWindow):
         func()
 
 
-def create_window_test(url='http://wwww.baidu.com'):
-    cef.CreateBrowserSync(url=url)
-
-
 def create_window(uid, title, url, width, height, resizable, fullscreen, min_size,
-                  confirm_quit, background_color, debug, js_api, webview_ready, context_menu, payload):
+                  confirm_quit, background_color, debug, js_api, webview_ready):
     # app = QApplication.instance() or QApplication([])
 
     app = CefApplication(sys.argv)
     settings = {
-        'context_menu': {'enabled': context_menu},
-    }
+        'context_menu': {
+            'enabled': False}}
     cef.Initialize(settings)
+
 
     def _create():
         browser = BrowserView(uid, title, url, width, height, resizable, fullscreen,
                               min_size, confirm_quit, background_color, debug, js_api,
                               webview_ready)
         browser.show()
-        set_javascript_bindings(uid, payload)
 
-    _create()
-    app.exec_()
-    app.stopTimer()
-    del app
-    cef.Shutdown()
-
-    # annotation by hy@20180720
-    # if uid == 'master':
-    #     _create()
-    #     app.exec_()
-    #     app.stopTimer()
-    #     # del browser  # Just to be safe, similarly to "del app"
-    #     del app  # Must destroy app object before calling Shutdown
-    #     cef.Shutdown()
-    # else:
-    #     i = list(BrowserView.instances.values())[0]  # arbitary instance
-    #     i.create_window_trigger.emit(_create)
-
-
-def set_javascript_bindings(uid, payload):
-    bindings = cef.JavascriptBindings(bindToFrames=False, bindToPopups=False)
-    for k, v in payload.items():
-        if v['type'] == 'function':
-            bindings.SetFunction(k, v['value'])
-    bindings.SetProperty("cefPython3", cef.GetVersion())
-    bindings.SetFunction('create_window_test', create_window_test)
-    BrowserView.instances[uid].view.SetJavascriptBindings(bindings)
+    if uid == 'master':
+        _create()
+        app.exec_()
+        app.stopTimer()
+        # del browser  # Just to be safe, similarly to "del app"
+        del app  # Must destroy app object before calling Shutdown
+        cef.Shutdown()
+    else:
+        i = list(BrowserView.instances.values())[0]     # arbitary instance
+        i.create_window_trigger.emit(_create)
 
 
 def set_title(title, uid):
@@ -445,8 +424,7 @@ def get_current_url(uid):
 def load_url(url, uid):
     BrowserView.instances[uid].load_url(url)
 
-
-def setCookie(cookie, uid):
+def setCookie(cookie,uid):
     BrowserView.instances[uid].setCookie(cookie)
 
 

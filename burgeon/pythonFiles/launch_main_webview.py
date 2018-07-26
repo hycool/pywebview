@@ -14,5 +14,7 @@ import qt5_cef
 
 
 if __name__ == '__main__':
-    qt5_cef.load_url('http://localhost:8421/pywebview/burgeon/assets/index.html')
+    # qt5_cef.load_url('http://localhost:8421/pywebview/burgeon/assets/index.html')
+    qt5_cef.load_url('http://localhost:8081', width=1800, height=900)  # pos main page
+    # qt5_cef.load_url('http://172.16.8.157:9092/m/dashboard', width=1000, height=600)  # pos main page
 

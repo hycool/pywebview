@@ -25,7 +25,6 @@
             text-align: center;
         }
     </style>
-    <script src="./burgeon.js.cef.sdk.js"></script>
 </head>
 <body>
     <h1>
@@ -39,8 +38,18 @@
     </div>
     <script>
         function loadUrl() {
-            if (typeof window.open_new_window === 'function') {
-                open_new_window("http://localhost:8421/pywebview/burgeon/assets/index.html");
+            if (typeof windowInstance.open === 'function') {
+                windowInstance.open({
+                    url: 'http://localhost:8421/pywebview/burgeon/assets/index.html',
+                    title: '伯俊软件',
+                    payload: {
+                        json: { a: 1, b: 2 },
+                        array: [1, 2, 3],
+                        str: 'str',
+                        number: Math.PI,
+                        fun: (msg) => { console.log('fun: ', msg) }
+                    }
+                });
             }
         }
         const updateInfo = () => {
@@ -50,7 +59,7 @@
         window.onload = function() {
             updateInfo();
             setInterval(updateInfo, 1000)
-        }
+        };
 
         const f1 = (e) => {
             console.log('listener 1 ', e);
@@ -58,7 +67,10 @@
                 window.windowInstance.closeWindow();
             }
         };
-        __cef__.addEventListener('windowCloseEvent', f1);
+
+        setTimeout(() => {
+            __cef__.addEventListener('windowCloseEvent', f1);
+        }, 0);
     </script>
 </body>
 </html>

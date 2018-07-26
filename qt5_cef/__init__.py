@@ -21,16 +21,17 @@ def generate_guid():
     return 'child_' + uuid4().hex[:8]
 
 
-def load_url(url=''):
+def load_url(url='', full_screen=False, width=800, height=600):
     def new_web_view():
         uid = generate_guid()
         create_window(
             uid=uid,
             url=url,
-            title='The Title Of WebView @ {time} '.format(time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
-            width=1200,
-            height=800,
-            context_menu=True
+            title='FC-POS',
+            width=width,
+            height=height,
+            context_menu=True,
+            full_screen=full_screen
         )
     new_web_view_thread = Thread(target=new_web_view)
     new_web_view_thread.start()
