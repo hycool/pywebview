@@ -134,6 +134,8 @@ class BrowserView(QMainWindow):
             param.setdefault('title', 'FC-POS')
             param.setdefault('payload', {})
             open_new_window(url=param["url"], title=param["title"], payload=param["payload"])
+        if isinstance(param, str):
+            open_new_window(url=param)
 
     def exec_full_screen(self):
         if self.is_full_screen:
