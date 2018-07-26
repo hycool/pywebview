@@ -2,6 +2,7 @@ import sys
 import os
 from PyQt5 import QtCore
 from threading import Event
+from gpuinfo.windows import get_gpus
 from cefpython3 import cefpython as cef
 from uuid import uuid4
 from PyQt5.QtGui import *
@@ -134,7 +135,7 @@ class BrowserView(QMainWindow):
             param.setdefault('title', 'FC-POS')
             param.setdefault('payload', {})
             open_new_window(url=param["url"], title=param["title"], payload=param["payload"])
-        if isinstance(param, str):
+        elif isinstance(param, str):
             open_new_window(url=param)
 
     def exec_full_screen(self):
@@ -181,8 +182,10 @@ def create_window(uid, title, url, width, height, resizable, full_screen, min_si
         'context_menu': {'enabled': context_menu},
         'auto_zooming': 0.0
     }
-    cef.Initialize(settings)
-
+    switches = {}
+    if len(get_gpus()) == 0:
+        switches.setdefault('disable-gpu', '')
+    cef.Initialize(settings=settings, switches=switches)
     create_browser_view(uid, title, url, width, height, resizable, full_screen, min_size,
                         background_color, web_view_ready)
     app.exec_()

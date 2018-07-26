@@ -21,7 +21,14 @@ def generate_guid():
     return 'child_' + uuid4().hex[:8]
 
 
-def load_url(url='', full_screen=False, width=800, height=600):
+def create_window_sub_thread(url='', full_screen=False, width=800, height=600):
+    """
+    :param url:
+    :param full_screen:
+    :param width:
+    :param height:
+    :return:
+    """
     def new_web_view():
         uid = generate_guid()
         create_window(
@@ -33,21 +40,13 @@ def load_url(url='', full_screen=False, width=800, height=600):
             context_menu=True,
             full_screen=full_screen
         )
+
     new_web_view_thread = Thread(target=new_web_view)
     new_web_view_thread.start()
 
 
-def create_window(
-        uid='master',
-        title='',
-        url=None,
-        width=800,
-        height=600,
-        resizable=True,
-        full_screen=False,
-        min_size=(200, 100),
-        background_color='#FFFFFF',
-        context_menu=False):
+def create_window(uid='master', title='FC-POS', url=None, width=800, height=600, resizable=True, full_screen=False,
+                  min_size=(200, 100), background_color='#FFFFFF', context_menu=False):
     web_view_ready.clear()
     gui.create_window(uid, title, url, width, height, resizable, full_screen, min_size,
                       background_color, web_view_ready, context_menu)
