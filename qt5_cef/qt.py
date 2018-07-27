@@ -40,6 +40,11 @@ class LoadHandler(object):
             browser.ExecuteJavascript(js.read())
         append_payload(self.uid, self.payload)
 
+    def OnLoadError(self, browser, frame, error_code, error_text_out, failed_url):
+        with open(os.path.dirname(__file__) + '/burgeon.cef.sdk.js', 'r', encoding='UTF-8') as js:
+            browser.ExecuteJavascript(js.read())
+        append_payload(self.uid, self.payload)
+
 
 class BrowserView(QMainWindow):
     instances = {}
@@ -92,11 +97,10 @@ class BrowserView(QMainWindow):
 
         # self.view.ShowDevTools()
         self.full_screen_trigger.connect(self.exec_full_screen)
-        self.set_zoom_level(1.0)
         self.load_event.set()
 
         if full_scrren:
-            self.toggle_full_screen()
+            self.emit_full_screen_signal()
 
         self.move(QApplication.desktop().availableGeometry().center() - self.rect().center())
         self.activateWindow()
@@ -104,30 +108,40 @@ class BrowserView(QMainWindow):
         if webview_ready is not None:
             webview_ready.set()
 
-    """
-    描述：监听qt窗口关闭事件
-    :param event: 事件
-    """
-
     def closeEvent(self, event):
-        if event.spontaneous():
-            event.ignore()
-            self.view.ExecuteFunction('window.__cef__.dispatchCustomEvent', 'windowCloseEvent')
+        if self.uid == 'master':
+            self.closeAllWindows()
         else:
-            event.accept()
-
-    """
-    描述：主调关闭当前窗口 
-    """
-
-    def closeWindow(self):
-        self.view.CloseDevTools()  # 关闭cef的devTools
-        self.close()  # 关闭qt的窗口
+            if event.spontaneous():
+                event.ignore()
+                self.view.ExecuteFunction('window.__cef__.dispatchCustomEvent', 'windowCloseEvent')
+            else:
+                event.accept()
 
     def resizeEvent(self, event):
         cef.WindowUtils.OnSize(self.winId(), 0, 0, 0)
 
+    def closeWindow(self):
+        """
+        This method can be invoked by Javascript.
+        :return:
+        """
+        self.view.CloseDevTools()  # 关闭cef的devTools
+        self.close()  # 关闭qt的窗口
+
+    def closeAllWindows(self):
+        """
+        This method can be invoked by Javascript.
+        :return:
+        """
+        for qt_main_window in BrowserView.instances.values():
+            qt_main_window.close()
+
     def open(self, param=None):
+        """
+        This method can be invoked by Javascript.
+        :return:
+        """
         if param is None:
             param = {}
         if isinstance(param, dict):
@@ -146,13 +160,14 @@ class BrowserView(QMainWindow):
 
         self.is_full_screen = not self.is_full_screen
 
-    def toggle_full_screen(self):
+    def emit_full_screen_signal(self):
         self.full_screen_trigger.emit()
 
-    def set_zoom_level(self, zoom_level):
-        self.view.SetZoomLevel(zoom_level)
-
     def create_cef_pure_window(self, url):
+        """
+        This method can be invoked by Javascript.
+        :return:
+        """
         cef_window = cef.CreateBrowserSync(url=url)
         cef_window.SetZoomLevel(5.0)
 
