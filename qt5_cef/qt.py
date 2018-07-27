@@ -2,12 +2,19 @@ import sys
 import os
 from PyQt5 import QtCore
 from threading import Event
+import qt5_cef.constant as constant
 from gpuinfo.windows import get_gpus
 from cefpython3 import cefpython as cef
 from uuid import uuid4
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+
+default_window_width = constant.default_window_width
+default_window_height = constant.default_window_height
+default_window_title = constant.default_window_title
+min_window_width = constant.min_window_width
+min_window_height = constant.min_window_height
 
 
 class CefApplication(QApplication):
@@ -96,7 +103,7 @@ class BrowserView(QMainWindow):
             self.view = cef.CreateBrowserSync(window_info, url="about:blank", settings=setting)
 
         # self.view.ShowDevTools()
-        self.full_screen_trigger.connect(self.exec_full_screen)
+        self.full_screen_trigger.connect(self.toggleFullScreen)
         self.load_event.set()
 
         if full_scrren:
@@ -146,13 +153,13 @@ class BrowserView(QMainWindow):
             param = {}
         if isinstance(param, dict):
             param.setdefault('url', 'about:blank')
-            param.setdefault('title', 'FC-POS')
+            param.setdefault('title', default_window_title)
             param.setdefault('payload', {})
             open_new_window(url=param["url"], title=param["title"], payload=param["payload"])
         elif isinstance(param, str):
             open_new_window(url=param)
 
-    def exec_full_screen(self):
+    def toggleFullScreen(self):
         if self.is_full_screen:
             self.showNormal()
         else:
@@ -176,12 +183,13 @@ def generate_guid():
     return 'child_' + uuid4().hex[:8]
 
 
-def open_new_window(url, title="FC-POS", payload=None):
+def open_new_window(url, title=default_window_title, payload=None):
     create_browser_view(uid=generate_guid(), url=url, title=title, payload=payload)
 
 
-def create_browser_view(uid, title="", url=None, width=800, height=600, resizable=True, full_screen=False,
-                        min_size=(200, 100),
+def create_browser_view(uid, title="", url=None, width=default_window_width, height=default_window_height,
+                        resizable=True, full_screen=False,
+                        min_size=(min_window_width, min_window_height),
                         background_color="#ffffff", web_view_ready=None, payload=None):
     browser = BrowserView(uid, title, url, width, height, resizable, full_screen, min_size,
                           background_color, web_view_ready)
@@ -190,8 +198,8 @@ def create_browser_view(uid, title="", url=None, width=800, height=600, resizabl
     set_javascript_bindings(uid)
 
 
-def create_window(uid, title, url, width, height, resizable, full_screen, min_size,
-                  background_color, web_view_ready, context_menu=False):
+def launch_main_window(uid, title, url, width, height, resizable, full_screen, min_size,
+                       background_color, web_view_ready, context_menu=False):
     app = CefApplication(sys.argv)
     settings = {
         'context_menu': {'enabled': context_menu},

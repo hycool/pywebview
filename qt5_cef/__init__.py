@@ -1,19 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import logging
-import time
 import qt5_cef.qt as gui
+import qt5_cef.constant as constant
 from threading import Event, Thread
 from uuid import uuid4
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
-
-OPEN_DIALOG = 10
-FOLDER_DIALOG = 20
-SAVE_DIALOG = 30
-
+default_window_width = constant.default_window_width
+default_window_height = constant.default_window_height
+default_window_title = constant.default_window_title
+min_window_width = constant.min_window_width
+min_window_height = constant.min_window_height
 web_view_ready = Event()
 
 
@@ -21,23 +18,17 @@ def generate_guid():
     return 'child_' + uuid4().hex[:8]
 
 
-def create_window_sub_thread(url='', full_screen=False, width=800, height=600):
-    """
-    :param url:
-    :param full_screen:
-    :param width:
-    :param height:
-    :return:
-    """
+def create_main_window_sub_thread(url='', full_screen=False, width=default_window_width, height=default_window_height,
+                                  context_menu=True):
     def new_web_view():
         uid = generate_guid()
-        create_window(
+        launch_main_window(
             uid=uid,
             url=url,
-            title='FC-POS',
+            title=default_window_title,
             width=width,
             height=height,
-            context_menu=True,
+            context_menu=context_menu,
             full_screen=full_screen
         )
 
@@ -45,8 +36,10 @@ def create_window_sub_thread(url='', full_screen=False, width=800, height=600):
     new_web_view_thread.start()
 
 
-def create_window(uid='master', title='FC-POS', url=None, width=800, height=600, resizable=True, full_screen=False,
-                  min_size=(200, 100), background_color='#FFFFFF', context_menu=False):
+def launch_main_window(uid='master', title=default_window_title, url=None, width=default_window_height,
+                       height=default_window_height, resizable=True,
+                       full_screen=False,
+                       min_size=(min_window_width, min_window_height), background_color='#FFFFFF', context_menu=False):
     web_view_ready.clear()
-    gui.create_window(uid, title, url, width, height, resizable, full_screen, min_size,
-                      background_color, web_view_ready, context_menu)
+    gui.launch_main_window(uid, title, url, width, height, resizable, full_screen, min_size,
+                           background_color, web_view_ready, context_menu)

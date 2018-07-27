@@ -24,23 +24,54 @@
             margin: 0 auto;
             text-align: center;
         }
+        button {
+            display: inline-block;
+            font-size: 14px;
+            width: 600px;
+            padding: 5px;
+            margin: 5px;
+            text-align: left;
+            color: #2a5aff;
+        }
+        button>span {
+            display: inline-block;
+            width: 150px;
+            text-align: right;
+            color: black;
+        }
     </style>
 </head>
 <body>
     <h1>
-        hello , this is a static page for testing pyWebView with cef.<br/>
-        <span id="random"></span> <br/>
-        <span id="browser_id"></span> <br/>
+        当前时间：<span id="random"></span> <br/>
+        当前窗口ID：<span id="browser_id"></span> <br/>
     </h1>
     <div>
-        <button onclick="loadUrl()">弹出一个新的窗口</button>
-        <button onclick="windowInstance.closeWindow()">主调关闭窗口</button>
-        <button onclick="windowInstance.closeAllWindows()">关闭所有窗口</button>
+        <button onclick="loadUrl()">
+            <span>弹出一个新的窗口：</span>
+            window.windowInstance.open(param: JsonObject)
+        </button>
+        <br/>
+        <button onclick="window.windowInstance.closeWindow()">
+            <span>主调关闭窗口：</span>
+            window.windowInstance.closeWindow()
+        </button>
+        <br/>
+        <button onclick="window.windowInstance.closeAllWindows()">
+            <span>关闭所有窗口：</span>
+            window.windowInstance.closeAllWindows()
+        </button>
+        <br/>
+        <button onclick="window.windowInstance.toggleFullScreen()">
+            <span>切换全屏：</span>
+            window.windowInstance.toggleFullScreen()
+        </button>
+        <br/>
     </div>
     <script>
         function loadUrl() {
-            if (typeof windowInstance.open === 'function') {
-                windowInstance.open({
+            if (typeof window.windowInstance.open === 'function') {
+                window.windowInstance.open({
                     url: 'http://localhost:8421/pywebview/burgeon/assets/index.html',
                     title: '伯俊软件',
                     payload: {
@@ -63,7 +94,6 @@
         };
 
         const f1 = (e) => {
-            console.log('listener 1 ', e);
             if (confirm('确定关闭当前窗口')) {
                 window.windowInstance.closeWindow();
             }
@@ -71,7 +101,7 @@
 
         setTimeout(() => {
             __cef__.addEventListener('windowCloseEvent', f1);
-        }, 0);
+        }, 10);
     </script>
 </body>
 </html>
