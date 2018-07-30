@@ -1,8 +1,0 @@
-
-python setup.py sdist bdist_wheel
-
-twine register dist/pad-on-left-1.0.0.tar.gz -r testpypi
-twine upload dist/* -r testpypi
-
-twine register dist/pad-on-left-1.0.0.tar.gz
-twine upload dist/*
