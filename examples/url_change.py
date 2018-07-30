@@ -9,7 +9,7 @@ def change_url():
     import time
     time.sleep(3)
     webview.load_url("http://www.hao123.com/")
-    webview.gui.set_title("nihao","master")
+    webview.gui.set_title("nihao", "master")
     print(webview.get_current_url())
 
 

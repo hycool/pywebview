@@ -16,3 +16,5 @@ venv
 requirements.txt
 __test__
 error.log
+qt5_cef.egg-info/
+dist/

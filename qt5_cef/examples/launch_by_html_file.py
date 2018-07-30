@@ -6,5 +6,4 @@ if __name__ == '__main__':
     #                            context_menu=True)
 
     qt5_cef.create_window(url='file:///{dirName}/index.html'.format(dirName=os.path.dirname(__file__)),
-                               context_menu=True)
-
+                          context_menu=True)
