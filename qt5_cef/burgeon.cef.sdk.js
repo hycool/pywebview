@@ -1,5 +1,6 @@
 (function () {
     const moduleName = 'windowInstance';
+    const sdkModuleName = '__cef__';
     const cef = {};
     const customEventMap = {
         windowCloseEvent: {
@@ -11,19 +12,19 @@
     cef.dispatchCustomEvent = (eventName) => {
         if (customEventMap[eventName].hooks === 0 &&
             window[moduleName] &&
-            typeof window[moduleName]["closeWindow"] === 'function') {
-            window[moduleName]["closeWindow"]();
+            typeof window[sdkModuleName].close === 'function') {
+            window[sdkModuleName].close();
         } else {
             window.dispatchEvent(customEventMap[eventName].event)
         }
     };
     cef.addEventListener = (eventName, eventHook) => {
         if (customEventMap[eventName] === undefined) {
-            console.error(`window.__cef__.addEventListener(eventName, eventHook) : eventName 必须是 ${Object.keys(customEventMap)} 中的一个`)
+            console.error(`window.${sdkModuleName}.addEventListener(eventName, eventHook) : eventName 必须是 ${Object.keys(customEventMap)} 中的一个`)
             return;
         }
         if (typeof eventHook !== 'function') {
-            console.error('window.__cef__.addEventListener(eventName, eventHook): eventHook 必须是一个函数');
+            console.error(`window.${sdkModuleName}.addEventListener(eventName, eventHook): eventHook 必须是一个函数`);
             return;
         }
         customEventMap[eventName].hooks += 1;
@@ -31,11 +32,11 @@
     };
     cef.removeEventListener = (eventName, eventHook) => {
         if (customEventMap[eventName] === undefined) {
-            console.error(`window.__cef__.addEventListener(eventName, eventHook) : eventName 必须是 ${Object.keys(customEventMap)} 中的一个`)
+            console.error(`window.${sdkModuleName}.addEventListener(eventName, eventHook) : eventName 必须是 ${Object.keys(customEventMap)} 中的一个`)
             return;
         }
         if (typeof eventHook !== 'function') {
-            console.error('window.__cef__.addEventListener(eventName, eventHook): eventHook 必须是一个函数');
+            console.error(`window.${sdkModuleName}.addEventListener(eventName, eventHook): eventHook 必须是一个函数`);
             return;
         }
         customEventMap[eventName].hooks -= 1;
@@ -70,5 +71,31 @@
         }
         window[moduleName][key] = value;
     };
-    window.__cef__ = cef;
+    cef.updateCefConfig = (key, value) => {
+        if (window[sdkModuleName] === undefined) {
+            window[sdkModuleName] = {}
+        }
+        window[sdkModuleName][key] = value;
+    };
+    cef.open = (params) => {
+        if (window[moduleName] && typeof window[moduleName].open === 'function') {
+            window[moduleName].open(params);
+        }
+    };
+    cef.close = () => {
+        if (window[moduleName] && typeof window[moduleName]['closeWindow'] === 'function') {
+            window[moduleName]['closeWindow']();
+        }
+    };
+    cef.closeAll = () => {
+        if (window[moduleName] && typeof window[moduleName]['closeAllWindows'] === 'function') {
+            window[moduleName]['closeAllWindows']();
+        }
+    };
+    cef.toggleFullScreen = () => {
+        if (window[moduleName] && typeof window[moduleName]['toggleFullScreen'] === 'function') {
+            window[moduleName]['toggleFullScreen']();
+        }
+    };
+    window[sdkModuleName] = cef;
 } ());

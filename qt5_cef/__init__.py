@@ -22,7 +22,7 @@ def create_main_window_sub_thread(url='', full_screen=False, width=default_windo
                                   context_menu=True):
     def new_web_view():
         uid = generate_guid()
-        launch_main_window(
+        create_window(
             uid=uid,
             url=url,
             title=default_window_title,
@@ -36,10 +36,19 @@ def create_main_window_sub_thread(url='', full_screen=False, width=default_windo
     new_web_view_thread.start()
 
 
-def launch_main_window(uid='master', title=default_window_title, url=None, width=default_window_height,
-                       height=default_window_height, resizable=True,
-                       full_screen=False,
-                       min_size=(min_window_width, min_window_height), background_color='#FFFFFF', context_menu=False):
+def create_window(title=default_window_title, url=None, uid='master', width=default_window_height,
+                  height=default_window_height, resizable=True,
+                  full_screen=False,
+                  min_size=(min_window_width, min_window_height), background_color='#FFFFFF', context_menu=False,
+                  url_type='document'):
     web_view_ready.clear()
-    gui.launch_main_window(uid, title, url, width, height, resizable, full_screen, min_size,
-                           background_color, web_view_ready, context_menu)
+    format_url = url
+    if url_type == 'string':
+        format_url = gui.html_to_data_uri(url)
+    gui.launch_main_window(uid, title, url=format_url, width=width, height=height, resizable=resizable,
+                           full_screen=full_screen, min_size=min_size,
+                           background_color=background_color, web_view_ready=web_view_ready, context_menu=context_menu)
+
+
+def evaluate_js(script, uid='master'):
+    gui.execute_javascript(script, uid)

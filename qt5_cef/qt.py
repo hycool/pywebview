@@ -1,9 +1,10 @@
 import sys
 import os
+import platform
+import base64
 from PyQt5 import QtCore
 from threading import Event
 import qt5_cef.constant as constant
-from gpuinfo.windows import get_gpus
 from cefpython3 import cefpython as cef
 from uuid import uuid4
 from PyQt5.QtGui import *
@@ -116,14 +117,11 @@ class BrowserView(QMainWindow):
             webview_ready.set()
 
     def closeEvent(self, event):
-        if self.uid == 'master':
-            self.closeAllWindows()
+        if event.spontaneous():
+            event.ignore()
+            self.view.ExecuteFunction('window.__cef__.dispatchCustomEvent', 'windowCloseEvent')
         else:
-            if event.spontaneous():
-                event.ignore()
-                self.view.ExecuteFunction('window.__cef__.dispatchCustomEvent', 'windowCloseEvent')
-            else:
-                event.accept()
+            event.accept()
 
     def resizeEvent(self, event):
         cef.WindowUtils.OnSize(self.winId(), 0, 0, 0)
@@ -179,6 +177,13 @@ class BrowserView(QMainWindow):
         cef_window.SetZoomLevel(5.0)
 
 
+def html_to_data_uri(html):
+    html = html.encode("utf-8", "replace")
+    b64 = base64.b64encode(html).decode("utf-8", "replace")
+    ret = "data:text/html;base64,{data}".format(data=b64)
+    return ret
+
+
 def generate_guid():
     return 'child_' + uuid4().hex[:8]
 
@@ -203,14 +208,20 @@ def launch_main_window(uid, title, url, width, height, resizable, full_screen, m
     app = CefApplication(sys.argv)
     settings = {
         'context_menu': {'enabled': context_menu},
-        'auto_zooming': 0.0
+        'auto_zooming': 0.0,
     }
-    switches = {}
-    if len(get_gpus()) == 0:
-        switches.setdefault('disable-gpu', '')
+    switches = {
+        'disable-gpu': ''
+    }
+    # if platform.system() == 'Windows':
+    #     from gpuinfo.windows import get_gpus
+    #     if len(get_gpus()) == 0:
+    #         switches.setdefault('disable-gpu', '')
+
     cef.Initialize(settings=settings, switches=switches)
-    create_browser_view(uid, title, url, width, height, resizable, full_screen, min_size,
-                        background_color, web_view_ready)
+    create_browser_view(uid=uid, title=title, url=url, width=width, height=height, resizable=resizable,
+                        full_screen=full_screen, min_size=min_size,
+                        background_color=background_color, web_view_ready=web_view_ready)
     app.exec_()
     app.stop_timer()
     del app
@@ -230,7 +241,7 @@ def set_javascript_bindings(uid):
 
 
 def append_payload(uid, payload):
-    BrowserView.instances[uid].view.ExecuteFunction('window.__cef__.updateWindowInstance', 'id', uid)
+    BrowserView.instances[uid].view.ExecuteFunction('window.__cef__.updateCefConfig', 'wid', uid)
     if payload is None:
         return
     if isinstance(payload, dict):
@@ -249,3 +260,8 @@ def append_payload(uid, payload):
         BrowserView.instances[uid].view.ExecuteFunction('window.__cef__.console',
                                                         '启动新窗口时挂载的payload必须为JsonObject，且对象属性不能为函数: payload = {payload}'
                                                         .format(payload=payload))
+
+
+def execute_javascript(script, uid):
+    BrowserView.instances[uid].view.ExecuteJavascript(script)
+

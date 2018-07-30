@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+import qt5_cef
+
+HTML_CODE = """
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -54,7 +57,7 @@
         <br/>
         <button onclick="window.__cef__.close()">
             <span>主调关闭窗口：</span>
-            window.__cef__.close.closeWindow()
+            window.__cef__.close()
         </button>
         <br/>
         <button onclick="window.__cef__.closeAll()">
@@ -104,3 +107,8 @@
     </script>
 </body>
 </html>
+    """
+
+if __name__ == '__main__':
+    qt5_cef.create_window(url=HTML_CODE, context_menu=True, url_type='string')
+

@@ -6,9 +6,6 @@ import base64
 import platform
 import sys
 import threading
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
 
 # HTML code. Browser will navigate to a Data uri created
 # from this html code.
@@ -17,7 +14,7 @@ HTML_code = """
 <html>
 <head>
     <style type="text/css">
-    body,html { font-family: Arial; font-size: 11pt; background: lightgrey }
+    body,html { font-family: Arial; font-size: 11pt; }
     div.msg { margin: 0.2em; line-height: 1.4em; }
     b { background: #ccc; font-weight: bold; font-size: 10pt;
         padding: 0.1em 0.2em; }
@@ -49,43 +46,31 @@ HTML_code = """
     </script>
 </head>
 <body>
-    <h1 style="text-align: center">Tutorial example</h1>
+    <h1>Tutorial example</h1>
     <div id="console"></div>
 </body>
 </html>
 """
 
 
-def new_window():
-    t = threading.Thread(target=main)
-    t.start()
-
-
 def main():
-    print('main')
-    app = QApplication(sys.argv)
-    demo1 = QMainWindow()
-    demo1.resize(1000, 800)
-    demo1.move(100, 100)
-
     check_versions()
     sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
-    cef.Initialize()
-    window_info = cef.WindowInfo()
-    rect = [0, 0, 1000, 1000]
-    window_info.SetAsChild(int(demo1.winId()), rect)
-    browser = cef.CreateBrowserSync(window_info, url="http://www.baidu.com")
-
-    demo1.setWindowTitle('Demo 1')
-    demo1.show()
-
-
+    # To change user agent use either "product_version"
+    # or "user_agent" options. Explained in Tutorial in
+    # "Change user agent string" section.
+    settings = {
+        # "product_version": "MyProduct/10.00",
+        # "user_agent": "MyAgent/20.00 MyProduct/10.00",
+    }
+    cef.Initialize(settings=settings)
     set_global_handler()
+    browser = cef.CreateBrowserSync(url=html_to_data_uri(HTML_code),
+                                    window_title="Tutorial")
     set_client_handlers(browser)
     set_javascript_bindings(browser)
     cef.MessageLoop()
     cef.Shutdown()
-    sys.exit(app.exec_())
 
 
 def check_versions():
@@ -139,7 +124,6 @@ def set_javascript_bindings(browser):
     bindings.SetProperty("python_property", "This property was set in Python")
     bindings.SetProperty("cefpython_version", cef.GetVersion())
     bindings.SetFunction("html_to_data_uri", html_to_data_uri)
-    bindings.SetFunction('new_window', new_window)
     bindings.SetObject("external", external)
     browser.SetJavascriptBindings(bindings)
 

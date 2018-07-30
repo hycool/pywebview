@@ -54,7 +54,7 @@
         <br/>
         <button onclick="window.__cef__.close()">
             <span>主调关闭窗口：</span>
-            window.__cef__.close.closeWindow()
+            window.__cef__.close()
         </button>
         <br/>
         <button onclick="window.__cef__.closeAll()">
@@ -64,7 +64,7 @@
         <br/>
         <button onclick="window.__cef__.toggleFullScreen()">
             <span>切换全屏：</span>
-            window.__cef__.toggleFullScreen()()
+            window.__cef__.toggleFullScreen()
         </button>
         <br/>
     </div>
@@ -72,7 +72,7 @@
         function loadUrl() {
             if (window.__cef__) {
                 window.__cef__.open({
-                    url: 'http://localhost:8421/pywebview/burgeon/assets/index.html',
+                    url: 'http://localhost:8421/poscloud/qt5_cef/examples/index.html',
                     title: '伯俊软件',
                     payload: {
                         json: { a: 1, b: 2 },
@@ -99,6 +99,7 @@
         };
 
         setTimeout(() => {
+            console.log('bind close event');
             __cef__.addEventListener('windowCloseEvent', f1);
         }, 10);
     </script>
